@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include<string.h>
-#define low_stock = 5
+#define low_stock 5
 
 int total_items =10;
 
@@ -118,8 +118,64 @@ void DeleteItem(struct inventory items[],int size)
     printf("\nItem Deleted Successfully!\n");
 
     }
+    return;
 }
 
+void UpdateQuantity(struct inventory items[],int size) 
+{   
+    char name[50];
+
+    printf("Enter Item Name: ");
+    scanf("%s",name);
+
+    int itemCode = -1;
+ 
+    for(int i = 0; i < total_items ;i++)
+    {
+        if(strcmp(name,items[i].name) == 0)
+        {
+            itemCode = i;
+            break;
+        }
+    }
+    if(itemCode == -1)
+    {
+        printf("Error.. Item not found in inventory.");
+    }
+
+    else
+    {
+    int quantity = 0;
+    printf("Please enter the new quantity : ");
+    scanf("%d",&quantity);
+    items[itemCode].quantity = quantity;
+
+    printf("Quantity Updated Successfully..\n");
+    printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[itemCode].itemCode,items[itemCode].name,items[itemCode].gstCode,items[itemCode].cost,items[itemCode].gstRate,items[itemCode].quantity);
+    
+    }
+
+    return;
+}
+
+void LowStock(struct inventory items[],int size) 
+{   
+    int temp =0;
+
+    for(int i = 0; i < total_items ;i++)
+    {
+        if (items[i].quantity <= low_stock)
+        {
+            temp =1;
+            printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[i].itemCode,items[i].name,items[i].gstCode,items[i].cost,items[i].gstRate,items[i].quantity);
+        }
+    }
+    if(temp == 0)
+    {
+        printf(" \nNo low stock items currently. \n");
+    }
+    return ;
+}
 
 int main()
 {
@@ -151,12 +207,12 @@ int main()
     do {
         printf("\n SHOPKEEPER PORTAL \n");
         printf("1. View All Items\n");//done
-        printf("2. Search Item (by Name or Code)\n");//D
+        printf("2. Search Item (by Name or Code)\n");//Deepu 
         printf("3. Add New Item\n");//done
         printf("4. Delete Item\n"); //done
         printf("5. Update Quantity\n");//EASY1
         printf("6. Generate Bill\n");//MAJOR WRITE ME N U 
-        printf("7. Show Low Stock Items\n"); //EASY
+        printf("7. Show Low Stock Items\n"); //done
         printf("8. Exit\n");//done;
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -176,13 +232,13 @@ int main()
                 DeleteItem(items,total_items);
                 break;
             case 5:
-                // update
+                UpdateQuantity(items,total_items);
                 break;
             case 6:
                 // generate
                 break;
             case 7:
-                // low stock
+                LowStock(items,total_items);
                 break;
             case 8:
                 printf("Exiting program...Thanks For Visiting.\n");
@@ -214,12 +270,11 @@ int main()
             case 2:
                 // search
                 break;
-                break;
             case 3:
                 // generate
                 break;
             case 4:
-                // low stock
+                LowStock(items,total_items);
                 break;
             case 5:
                 printf("Exiting program...Thanks For Visiting.\n");
@@ -255,10 +310,10 @@ int main()
                 AddNewItem(items,total_items);
                 break;
             case 4:
-                // update
+                UpdateQuantity(items,total_items);
                 break;
             case 5:
-                // low stock
+                LowStock(items,total_items);
                 break;
             case 6:
                 printf("Exiting program... Thanks For Visiting.\n");
