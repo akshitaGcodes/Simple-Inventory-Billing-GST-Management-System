@@ -1,3 +1,10 @@
+/*
+1.password user id login 
+2. Self checkout as 4thlogin 
+3.time date thingy 
+
+worst case scenario add gst motnly reports
+*/
 #include <stdio.h>
 #include<string.h>
 #define low_stock 5
@@ -210,7 +217,7 @@ int main()
         printf("2. Search Item (by Name or Code)\n");//Deepu 
         printf("3. Add New Item\n");//done
         printf("4. Delete Item\n"); //done
-        printf("5. Update Quantity\n");//EASY1
+        printf("5. Update Quantity\n");//done
         printf("6. Generate Bill\n");//MAJOR WRITE ME N U 
         printf("7. Show Low Stock Items\n"); //done
         printf("8. Exit\n");//done;
@@ -253,7 +260,7 @@ int main()
     case 2:
     do {
         printf("\n CASHIER PORTAL \n");
-        printf("1. View All Items\n");//show inventory
+        printf("1. View All Items\n");
         printf("2. Search Item (by Name or Code)\n");
         printf("3. Generate Bill\n");
         printf("4. Show Low Stock Items\n");
@@ -289,7 +296,7 @@ int main()
     case 3:
     do {
         printf("\n STOCK UPDATING PORTAL \n");
-        printf("1. View All Items\n");//show inventory
+        printf("1. View All Items\n");
         printf("2. Search Item (by Name or Code)\n");
         printf("3. Add New Item\n");
         printf("4. Update Quantity\n");
