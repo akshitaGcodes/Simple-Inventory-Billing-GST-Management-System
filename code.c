@@ -1,11 +1,13 @@
 /*
 1.password user id login 
-2. Self checkout as 4thlogin 
-3.time date thingy 
+2. Self checkout as 4th login 
+3.time 
 
 worst case scenario add gst motnly reports
 */
 #include <stdio.h>
+#include<string.h>
+#include<time.h>
 #include<string.h>
 #define low_stock 5
 
@@ -21,11 +23,23 @@ struct inventory
         int quantity;
     };
 
+
+char* Date(void) 
+{
+    static char date_buffer[100];
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+
+    strftime(date_buffer, sizeof(date_buffer), "%d-%m-%Y", t);
+    
+    return date_buffer; 
+}
+
 void inventory(struct inventory items[], int size)
 {
-    printf("Inventory List as on : \n"); //add date here
+    printf("Inventory List as on : %s\n",Date()); 
  
-     printf("--------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------\n");
     printf("%-10s %-20s %-10s %-10s %-10s%-10s\n", "Item Code", "Item Name", "GST Code", "Cost", "GST Rate","Quantity");
     printf("--------------------------------------------------------------------------\n");
 
@@ -34,6 +48,74 @@ void inventory(struct inventory items[], int size)
         printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[i].itemCode,items[i].name,items[i].gstCode,items[i].cost,items[i].gstRate,items[i].quantity);
     }
      printf("--------------------------------------------------------------------------\n");
+}
+
+
+void search(struct inventory items[], int size)
+{
+    int searchChoice = 0;
+    printf("Would you like to search by :\n1.Name\n2.Itemcode.\nPlease enter your choice :"); 
+    scanf("%d",&searchChoice);
+
+    char itemName[50];
+    int temp = 0;
+    int code = 0;
+    switch(searchChoice)
+    {
+        case 1:
+        {
+        printf("Please enter item name : ");
+        scanf("%s",itemName);
+
+        for(int i = 0; i<total_items;i++)
+        {
+            int result = strcmp(itemName, items[i].name);
+            if(result == 0)
+            {
+                temp = i;
+                break;
+            }
+        }
+        printf("\n Item Found. Details below.\n");
+        printf("--------------------------------------------------------------------------\n");
+        printf("%-10s %-20s %-10s %-10s %-10s%-10s\n", "Item Code", "Item Name", "GST Code", "Cost", "GST Rate","Quantity");
+        printf("--------------------------------------------------------------------------\n");
+        printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[temp].itemCode,items[temp].name,items[temp].gstCode,items[temp].cost,items[temp].gstRate,items[temp].quantity);
+        printf("--------------------------------------------------------------------------\n");
+
+        break;
+        }
+
+        case 2:
+        {
+            printf("Please enter item code : ");
+            scanf("%d",&code);
+            
+            for(int i = 0; i<total_items;i++)
+            {
+                if(code == items[i].itemCode)
+                temp = i;
+            }
+
+            printf("\n Item Found. Details below.\n");
+            printf("--------------------------------------------------------------------------\n");
+            printf("%-10s %-20s %-10s %-10s %-10s%-10s\n", "Item Code", "Item Name", "GST Code", "Cost", "GST Rate","Quantity");
+            printf("--------------------------------------------------------------------------\n");
+            printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[temp].itemCode,items[temp].name,items[temp].gstCode,items[temp].cost,items[temp].gstRate,items[temp].quantity);
+            printf("--------------------------------------------------------------------------\n");
+
+        break;
+        }
+
+        default:
+        {
+            printf("Error...Please try again.\n");
+            break;
+        }
+
+    }
+
+
 }
 
 void AddNewItem(struct inventory items[],int size) 
@@ -213,14 +295,14 @@ int main()
     case 1:
     do {
         printf("\n SHOPKEEPER PORTAL \n");
-        printf("1. View All Items\n");//done
-        printf("2. Search Item (by Name or Code)\n");//Deepu 
-        printf("3. Add New Item\n");//done
-        printf("4. Delete Item\n"); //done
-        printf("5. Update Quantity\n");//done
-        printf("6. Generate Bill\n");//MAJOR WRITE ME N U 
-        printf("7. Show Low Stock Items\n"); //done
-        printf("8. Exit\n");//done;
+        printf("1. View All Items\n");
+        printf("2. Search Item (by Name or Code)\n");//to do 
+        printf("3. Add New Item\n");
+        printf("4. Delete Item\n"); 
+        printf("5. Update Quantity\n");
+        printf("6. Generate Bill\n");//MAJOR to do
+        printf("7. Show Low Stock Items\n"); 
+        printf("8. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -230,7 +312,7 @@ int main()
                 inventory(items,total_items);
                 break;
             case 2:
-                // search
+                search(items,total_items);
                 break;
             case 3:
                 AddNewItem(items,total_items);
