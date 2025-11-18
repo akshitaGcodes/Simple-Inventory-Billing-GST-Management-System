@@ -1,8 +1,6 @@
 /*
 1.password user id login 
 2. Self checkout as 4th login 
-3.time 
-
 worst case scenario add gst motnly reports
 */
 #include <stdio.h>
