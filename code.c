@@ -6,7 +6,6 @@
 worst case scenario add gst motnly reports
 */
 #include <stdio.h>
-#include<string.h>
 #include<time.h>
 #include<string.h>
 #define low_stock 5
@@ -58,7 +57,7 @@ void search(struct inventory items[], int size)
     scanf("%d",&searchChoice);
 
     char itemName[50];
-    int temp = 0;
+    int temp = -1;
     int code = 0;
     switch(searchChoice)
     {
@@ -76,13 +75,6 @@ void search(struct inventory items[], int size)
                 break;
             }
         }
-        printf("\n Item Found. Details below.\n");
-        printf("--------------------------------------------------------------------------\n");
-        printf("%-10s %-20s %-10s %-10s %-10s%-10s\n", "Item Code", "Item Name", "GST Code", "Cost", "GST Rate","Quantity");
-        printf("--------------------------------------------------------------------------\n");
-        printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[temp].itemCode,items[temp].name,items[temp].gstCode,items[temp].cost,items[temp].gstRate,items[temp].quantity);
-        printf("--------------------------------------------------------------------------\n");
-
         break;
         }
 
@@ -97,13 +89,6 @@ void search(struct inventory items[], int size)
                 temp = i;
             }
 
-            printf("\n Item Found. Details below.\n");
-            printf("--------------------------------------------------------------------------\n");
-            printf("%-10s %-20s %-10s %-10s %-10s%-10s\n", "Item Code", "Item Name", "GST Code", "Cost", "GST Rate","Quantity");
-            printf("--------------------------------------------------------------------------\n");
-            printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[temp].itemCode,items[temp].name,items[temp].gstCode,items[temp].cost,items[temp].gstRate,items[temp].quantity);
-            printf("--------------------------------------------------------------------------\n");
-
         break;
         }
 
@@ -112,9 +97,20 @@ void search(struct inventory items[], int size)
             printf("Error...Please try again.\n");
             break;
         }
-
+        
     }
 
+    if (temp == -1)
+        {
+            printf("Item not found.\n");
+            return;
+        }
+            printf("\n Item Found. Details below.\n");
+            printf("--------------------------------------------------------------------------\n");
+            printf("%-10s %-20s %-10s %-10s %-10s%-10s\n", "Item Code", "Item Name", "GST Code", "Cost", "GST Rate","Quantity");
+            printf("--------------------------------------------------------------------------\n");
+            printf("%-10d %-20s %-10d %-10d %-10d %-10d\n",items[temp].itemCode,items[temp].name,items[temp].gstCode,items[temp].cost,items[temp].gstRate,items[temp].quantity);
+            printf("--------------------------------------------------------------------------\n");
 
 }
 
@@ -212,7 +208,7 @@ void DeleteItem(struct inventory items[],int size)
 
 void UpdateQuantity(struct inventory items[],int size) 
 {   
-    char name[50];
+    char name[100];
 
     printf("Enter Item Name: ");
     scanf("%s",name);
