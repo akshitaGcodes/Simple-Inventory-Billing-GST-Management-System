@@ -1,6 +1,8 @@
 /*
 1.password user id login 
 2. Self checkout as 4th login 
+3.time 
+
 worst case scenario add gst motnly reports
 */
 #include <stdio.h>
@@ -9,6 +11,13 @@ worst case scenario add gst motnly reports
 #define low_stock 5
 
 int total_items =10;
+
+struct User 
+{
+    char username[50];
+    char password[50];
+    int login; // 4 hain for now (self checkout)
+} ;
 
 struct inventory
     {
@@ -260,10 +269,45 @@ void LowStock(struct inventory items[],int size)
     return ;
 }
 
+int login(struct User users[], int num_users)
+ {
+    char username[50];
+    char password[50];
+    printf("\nLogin - enter username: ");
+    scanf("%49s", username);
+    printf("Enter password: ");
+    scanf("%49s",password );
+
+    for (int i = 0; i < num_users; ++i) {
+        if (strcmp(username, users[i].username) == 0 && strcmp(password, users[i].password) == 0) {
+            printf("Login successful. Role: ");
+            switch (users[i].login) 
+            {
+                case 1: 
+                printf("Shopkeeper\n");
+                 break;
+                case 2: 
+                printf("Cashier\n"); 
+                    break;
+                case 3: 
+                printf("Loader\n"); 
+                    break;
+                case 4: 
+                printf("Self-checkout\n");
+                 break;
+            }
+            return users[i].login;
+        }
+    }
+
+    printf("Invalid username or password.\n");
+    return 0;
+}
+
 int main()
 {
     struct inventory items[100];
-    
+
     items[0] = (struct inventory){"Pen Black",1,9608,5,18,150};
     items[1] = (struct inventory){"Pen Blue",2,9608,5,18,150};
     items[2] = (struct inventory){"Pen Coloured",3,9608,10,18,100};
@@ -275,7 +319,15 @@ int main()
     items[8] = (struct inventory){"Adhesive Tape",9,3919,25,18,30};
     items[9] = (struct inventory){"Diaries",10,4820,250,18,40};
 
-    
+    struct User users[4];
+
+    users[0] = (struct User){"ShopKeeper","SK@123",1};
+    users[1] = (struct User){"SCashier","C@123",2};
+    users[2] = (struct User){"Loader","L@123",3};
+    users[3] = (struct User){"Consumer","C@123",4};
+
+
+//login(struct User users[], int num_users)
     int login = 0;
      printf("\n GST BILLING SYSTEM GENERATOR \n");
      printf("Choose your login credentials :- \n");
