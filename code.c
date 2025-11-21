@@ -1,7 +1,6 @@
 /*
-1.password user id login 
+
 2. Self checkout as 4th login 
-3.time 
 
 worst case scenario add gst motnly reports
 */
@@ -269,17 +268,18 @@ void LowStock(struct inventory items[],int size)
     return ;
 }
 
-int login(struct User users[], int num_users)
+int loginFun(struct User users[], int num_users)
  {
     char username[50];
     char password[50];
-    printf("\nLogin - enter username: ");
+    printf("\nEnter username: ");
     scanf("%49s", username);
     printf("Enter password: ");
     scanf("%49s",password );
 
     for (int i = 0; i < num_users; ++i) {
-        if (strcmp(username, users[i].username) == 0 && strcmp(password, users[i].password) == 0) {
+        if (strcmp(username, users[i].username) == 0 && strcmp(password, users[i].password) == 0) 
+        {
             printf("Login successful. Role: ");
             switch (users[i].login) 
             {
@@ -321,20 +321,21 @@ int main()
 
     struct User users[4];
 
-    users[0] = (struct User){"ShopKeeper","SK@123",1};
-    users[1] = (struct User){"SCashier","C@123",2};
+    users[0] = (struct User){"Shopkeeper","SK@123",1};
+    users[1] = (struct User){"Cashier","C@123",2};
     users[2] = (struct User){"Loader","L@123",3};
     users[3] = (struct User){"Consumer","C@123",4};
 
 
-//login(struct User users[], int num_users)
     int login = 0;
      printf("\n GST BILLING SYSTEM GENERATOR \n");
-     printf("Choose your login credentials :- \n");
+     printf("Login with your credentials :- \n");
      printf("1. Shopkeeper\n");
      printf("2. Cashier(s)\n");
      printf("3. Loader(Stock Updating)\n");
-     scanf("%d", &login);
+   
+     login = loginFun(users,4);
+
     int choice;
     switch(login)
     {
