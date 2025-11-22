@@ -40,7 +40,7 @@ char* Date(void)
     return date_buffer; 
 }
 
-void inventory(struct inventory items[], int size)
+void inventoryView(struct inventory items[], int size)
 {
     printf("Inventory List as on : %s\n",Date()); 
  
@@ -249,6 +249,12 @@ void UpdateQuantity(struct inventory items[],int size)
     return;
 }
 
+void generateBill(struct inventory items[],int size) 
+{   
+    
+    return ;
+}
+
 void LowStock(struct inventory items[],int size) 
 {   
     int temp =0;
@@ -324,7 +330,7 @@ int main()
     users[0] = (struct User){"Shopkeeper","SK@123",1};
     users[1] = (struct User){"Cashier","C@123",2};
     users[2] = (struct User){"Loader","L@123",3};
-    users[3] = (struct User){"Consumer","C@123",4};
+    users[3] = (struct User){"Custmer","123",4};
 
 
     int login = 0;
@@ -356,7 +362,7 @@ int main()
 
         switch(choice) {
             case 1:
-                inventory(items,total_items);
+                inventoryView(items,total_items);
                 break;
             case 2:
                 search(items,total_items);
@@ -401,10 +407,10 @@ int main()
         switch(choice)
         {
             case 1:
-                inventory(items,total_items);
+                inventoryView(items,total_items);
                 break;
             case 2:
-                // search
+                search(items,total_items);
                 break;
             case 3:
                 // generate
@@ -437,10 +443,10 @@ int main()
 
         switch(choice) {
             case 1:
-               inventory(items,total_items);
+               inventoryView(items,total_items);
                 break;
             case 2:
-                // search
+                search(items,total_items);
                 break;
             case 3:
                 AddNewItem(items,total_items);
@@ -460,6 +466,32 @@ int main()
     } while(choice != 6);
     break;
 
+    case 4:
+    do {
+        printf("\n CUSTOMER PORTALL \n");
+        printf("1. Generate Bill\n");
+        printf("2. Search Item (by Name or Code)\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+
+        switch(choice)
+         {
+            case 1:
+               inventoryView(items,total_items);
+                break;
+            case 2:
+                search(items,total_items);
+                break;
+            case 3:
+                printf("Exiting program... Thanks For Visiting.\n");
+                break;
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    } while(choice != 3);
+    break;
 
     default:
     printf("Invalid Login...Please try again");
