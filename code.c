@@ -334,18 +334,22 @@ int main()
     items[7] = (struct inventory){"Stapler pins",8,8205,10,18,30};
     items[8] = (struct inventory){"Adhesive Tape",9,3919,25,18,30};
     items[9] = (struct inventory){"Diaries",10,4820,250,18,40};
-    items[10] = (struct inventory){"Diaries",10,4820,250,18,40};
-    items[11] = (struct inventory){"Diaries",10,4820,250,18,40};
-    items[12] = (struct inventory){"Diaries",10,4820,250,18,40};
-    items[13] = (struct inventory){"Diaries",10,4820,250,18,40};
-    items[14] = (struct inventory){"Diaries",10,4820,250,18,40};
-    items[15] = (struct inventory){"Diaries",10,4820,250,18,40};
-    items[15] = (struct inventory){"Diaries",10,4820,250,18,40};
-    items[15] = (struct inventory){"Diaries",10,4820,250,18,40};
-
-
+    items[10] = (struct inventory){"Marker Pen",11,9608,20,18,100};
+    items[11] = (struct inventory){"Highlighter",12,9608,15,18,80};
+    items[12] = (struct inventory){"Glue Stick",13,3506,10,18,120};
+    items[13] = (struct inventory){"Drawing Book",14,4820,50,12,60};
+    items[14] = (struct inventory){"Sketch Pen Set",15,9609,200,18,40};
+    items[15] = (struct inventory){"Notebook",16,4820,30,12,150};
+    items[16] = (struct inventory){"Geometry Box",17,9017,45,18,70};
+    items[17] = (struct inventory){"Sharpener",18,4016,5,18,200};
+    items[18] = (struct inventory){"Whiteboard",19,9403,300,18,15};
+    items[19] = (struct inventory){"Clipboard",20,3926,120,18,25};
+    items[20] = (struct inventory){"Paper Punch",21,8472,120,18,30};
+    items[21] = (struct inventory){"File Tray",22,3926,200,18,25};
+    items[22] = (struct inventory){"Cutter Knife",23,8213,70,18,40};
+    items[23] = (struct inventory){"Punching Machine",24,8472,350,18,10};
+    items[24] = (struct inventory){"Sticky Tack",25,3506,15,18,80};
     struct User users[4];
-
     users[0] = (struct User){"Shopkeeper","SK@123",1};
     users[1] = (struct User){"Cashier","C@123",2};
     users[2] = (struct User){"Loader","L@123",3};
