@@ -334,6 +334,15 @@ int main()
     items[7] = (struct inventory){"Stapler pins",8,8205,10,18,30};
     items[8] = (struct inventory){"Adhesive Tape",9,3919,25,18,30};
     items[9] = (struct inventory){"Diaries",10,4820,250,18,40};
+    items[10] = (struct inventory){"Diaries",10,4820,250,18,40};
+    items[11] = (struct inventory){"Diaries",10,4820,250,18,40};
+    items[12] = (struct inventory){"Diaries",10,4820,250,18,40};
+    items[13] = (struct inventory){"Diaries",10,4820,250,18,40};
+    items[14] = (struct inventory){"Diaries",10,4820,250,18,40};
+    items[15] = (struct inventory){"Diaries",10,4820,250,18,40};
+    items[15] = (struct inventory){"Diaries",10,4820,250,18,40};
+    items[15] = (struct inventory){"Diaries",10,4820,250,18,40};
+
 
     struct User users[4];
 
