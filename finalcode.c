@@ -878,7 +878,8 @@ int main()
         printf("\n CUSTOMER PORTALL \n");
         printf("1. Generate Bill\n");
         printf("2. Search Item (by Name or Code)\n");
-        printf("3. Exit\n");
+        printf("3. Return / Exchange Item \n");
+        printf("4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -892,6 +893,31 @@ int main()
                 search(items,total_items);
                 break;
             case 3:
+            {
+                returnItem(items, total_items, BillComponents, &billItems);
+                if (billItems > 0) {
+                    double subTotal = 0.0;
+                    double totalGST = 0.0;
+                    printf("\n--- Updated Bill Summary ---\n");
+                    printf("%-5s %-20s %-8s %-10s %-10s\n", "S.No", "Item Name", "Qty", "Amount", "GST");
+                    printf("----------------------------------------------------\n");
+                    for (int i = 0; i < billItems; i++) {
+                        double amount = BillComponents[i].amount;
+                        double gst = BillComponents[i].gstAmount;
+                        subTotal += amount;
+                        totalGST += gst;
+                        printf("%-5d %-20s %-8d %-10.2f %-10.2f\n", i+1, BillComponents[i].name, BillComponents[i].quantity, amount, gst);
+                    }
+                    printf("----------------------------------------------------\n");
+                    printf("%-35s %-10.2f\n", "Total (before tax):", subTotal);
+                    printf("%-35s %-10.2f\n", "Total GST:", totalGST);
+                    printf("%-35s %-10.2f\n", "GRAND TOTAL:", subTotal + totalGST);
+                } else {
+                    printf("\nNo items left in the current bill.\n");
+                }
+                break;
+            }
+            case 4:
                 printf("Exiting program... Thanks For Visiting.\n");
                 break;
             default:
