@@ -5,6 +5,7 @@ worst case scenario add gst motnly reports
 #include <stdio.h>
 #include<time.h>
 #include<string.h>
+#include<stdlib.h>
 #define low_stock 5
 #define max_items 50
 
@@ -367,9 +368,78 @@ void generateBill(struct inventory items[],int size,struct BillItems BillCompone
         printf("\nCannot finalize, the bill is empty.\n");
     }
 }
-void printBill(struct BillItems bill[], int count, double subTotal, double totalGST)
-{
+
+void printBillInFile(struct BillItems bill[], int count, double subTotal, double totalGST)
+{   
+    const char *companyName = "ABC Stationery Store";
+    const char *state = "Delhi";
+    const char *stateCode = "07";
+    
+    double grandTotal = subTotal + totalGST;
+
+    char fileName[50] = "Bills\\Bill"; 
+    
+    int sixDigitRandomNumber = rand() % 900000 + 100000;
+    char random[6];
+    int temp = sixDigitRandomNumber;
+    for (int i = 0; i < 5; i++)
+    {
+        int digit = temp % 10;
+        char charDigit = (char)(digit + '0'); 
+        
+        random[i] = charDigit;
+        temp /= 10;
+    }
    
+    strcat(fileName, random);
+    strcat(fileName, ".txt");
+    FILE *fp = fopen(fileName, "w");
+
+    if (!fp) 
+    { 
+        perror("fopen"); 
+        //return 1; 
+    }
+
+    fprintf(fp, "\n=======================================================================\n");
+    fprintf(fp, "                           **GST INVOICE**\n");
+    fprintf(fp, "-----------------------------------------------------------------------\n");
+    fprintf(fp, "Company Name: %s\n", companyName);
+    fprintf(fp, "Invoice No: ABC Stationers/2025/11/0001\n"); 
+    fprintf(fp, "Date: %s\n", Date()); 
+    fprintf(fp, "State: %s\n", state);
+    fprintf(fp, "State Code : %s\n",stateCode);
+    fprintf(fp, "Name: Customer Name\n");
+    fprintf(fp, "=======================================================================\n");
+    
+    fprintf(fp, "%-5s %-20s %-10s %-10s %-10s %-8s\n","S No.", "Item Name", "Quantity", "Price(pp)", "Amount", "GST Rate");
+    fprintf(fp, "-----------------------------------------------------------------------\n");
+
+    for (int i = 0; i < count; i++) 
+    {
+        fprintf(fp, "%-5d %-20s %-10d %-10d %-10.2f %-8d%%\n",i + 1,bill[i].name,bill[i].quantity,bill[i].cost,bill[i].amount,bill[i].gstRate); 
+    }
+
+    fprintf(fp, "-----------------------------------------------------------------------\n");
+    
+    fprintf(fp, "%50s %-15s %.2f\n", "Total Amount Before Tax:", "", subTotal);
+    fprintf(fp, "%50s %-15s %.2f\n", "Add CGST:", "", 0); 
+    fprintf(fp, "%50s %-15s %.2f\n", "Add SGST:", "", 0);
+    fprintf(fp, "%50s %-15s %.2f\n", "Add IGST:", "", totalGST);
+    fprintf(fp, "=======================================================================\n");
+    fprintf(fp, "%50s %-15s %.2f\n", "TOTAL AMOUNT:", "", grandTotal);
+    fprintf(fp, "=======================================================================\n");
+
+    fflush(fp);
+    fclose(fp);
+
+    return;
+}
+
+void printBill(struct BillItems bill[], int count, double subTotal, double totalGST)
+{   
+    printBillInFile(bill, count, subTotal, totalGST);
+    
     const char *companyName = "ABC Stationery Store";
     const char *state = "Delhi";
     const char *stateCode = "07";
@@ -404,6 +474,7 @@ void printBill(struct BillItems bill[], int count, double subTotal, double total
     printf("=======================================================================\n");
     printf("%50s %-15s %.2f\n", "TOTAL AMOUNT:", "", grandTotal);
     printf("=======================================================================\n");
+
     return;
 }
 
