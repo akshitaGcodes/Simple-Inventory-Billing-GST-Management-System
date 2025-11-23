@@ -6,8 +6,9 @@ worst case scenario add gst motnly reports
 #include<time.h>
 #include<string.h>
 #define low_stock 5
+#define max_items 50
 
-int total_items =10;
+int total_items = 25;
 
 struct User 
 {
@@ -25,7 +26,6 @@ struct inventory
         int gstRate;
         int quantity;
     };
-
 
 char* Date(void) 
 {
@@ -249,11 +249,167 @@ void UpdateQuantity(struct inventory items[],int size)
     return;
 }
 
-void generateBill(struct inventory items[],int size) 
-{   
-    //void addItemToBill(items,total_items);
+struct BillItems 
+{
+    char name[100];
+    int quantity;
+    int cost;
+    int gstRate;
+    int itemCode;
+    double amount;
+    double gstAmount;
+    double total;
+};
 
-    return ;
+struct BillItems BillComponents[max_items];
+
+void printBill(struct BillItems bill[], int count, double subTotal, double totalGST);
+void saveGstReport(double totalGstAmount); 
+
+void generateBill(struct inventory items[],int size,struct BillItems BillComponents[]) 
+{ 
+    int billItems = 0; 
+    double subTotal = 0.0; 
+    double totalGST = 0.0;
+    int choice = 1;
+    int itemCode;
+    int Quantity;
+    int itemIndex = -1; 
+
+    printf("\n--- GENERATE BILL ---\n");
+ 
+    while (1) 
+    {
+        printf("\n1. Add Item to Bill\n");
+        printf("2. Finalize and Print Bill\n");
+        printf("3. Cancel Bill\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 1)
+        {
+            if (billItems >= max_items) 
+            {
+                printf("\nBill limit reached! Please finalize the current bill.\n");
+                continue;
+            }
+
+            printf("Enter Item Code: ");
+            scanf("%d", &itemCode);
+
+            itemIndex = -1;
+            for (int i = 0; i < size; i++) 
+            {
+                if (items[i].itemCode == itemCode) 
+                {
+                    itemIndex = i;
+                    break;
+                }
+            }
+
+            if (itemIndex != -1) 
+            {
+                printf("Enter Quantity for %s (Max: %d): ", items[itemIndex].name, items[itemIndex].quantity);
+                scanf("%d", &Quantity);
+
+                if (Quantity > 0 && Quantity <= items[itemIndex].quantity) 
+                {
+                    strcpy(BillComponents[billItems].name, items[itemIndex].name);
+                    BillComponents[billItems].itemCode = items[itemIndex].itemCode;
+                    BillComponents[billItems].quantity = Quantity;
+                    BillComponents[billItems].cost = items[itemIndex].cost;
+                    BillComponents[billItems].gstRate = items[itemIndex].gstRate;
+
+                    BillComponents[billItems].amount = (double)BillComponents[billItems].cost * BillComponents[billItems].quantity;
+
+                    double gst_rate_factor = (double)BillComponents[billItems].gstRate / 100.0;
+                    BillComponents[billItems].gstAmount = BillComponents[billItems].amount * gst_rate_factor;
+
+                    BillComponents[billItems].total = BillComponents[billItems].amount + BillComponents[billItems].gstAmount;
+                    
+                    items[itemIndex].quantity -= Quantity;
+
+                    subTotal += BillComponents[billItems].amount;
+                    totalGST += BillComponents[billItems].gstAmount;
+
+                    printf("\nItem **%s** added (Qty: %d). Taxable Value: %.2f\n", BillComponents[billItems].name, Quantity, BillComponents[billItems].amount);
+
+                    billItems++;
+                } 
+                else 
+                {
+                    printf("Invalid quantity or insufficient stock (Available: %d)\n", items[itemIndex].quantity);
+                }
+            } 
+            else 
+            {
+                printf("Item with code %d not found in inventory.\n", itemCode);
+            }
+        }
+        else if (choice == 2 || choice == 3) 
+        {
+            break; 
+        }
+        else
+        {
+            printf("Invalid choice! Please enter 1, 2, or 3.\n");
+        }
+    } 
+
+    if (choice == 2 && billItems > 0) 
+    {
+        printf("\nFinalizing bill...\n");
+        printBill(BillComponents, billItems, subTotal, totalGST);
+        saveGstReport(totalGST); 
+    } 
+    else if (choice == 2 && billItems == 0) 
+    {
+        printf("\nCannot finalize, the bill is empty.\n");
+    }
+}
+void printBill(struct BillItems bill[], int count, double subTotal, double totalGST)
+{
+   
+    const char *companyName = "ABC Stationery Store";
+    const char *state = "Delhi";
+    const char *stateCode = "07";
+    
+    double grandTotal = subTotal + totalGST;
+
+    printf("\n=======================================================================\n");
+    printf("                           **GST INVOICE**\n");
+    printf("-----------------------------------------------------------------------\n");
+    printf("Company Name: %s\n", companyName);
+    printf("Invoice No: ABC Stationers/2025/11/0001\n"); 
+    printf("Date: %s\n", Date()); 
+    printf("State: %s\n", state);
+    printf("State Code : %s\n",stateCode);
+    printf("Name: Customer Name\n");
+    printf("=======================================================================\n");
+    
+    printf("%-5s %-20s %-10s %-10s %-10s %-8s\n","S No.", "Item Name", "Quantity", "Price(pp)", "Amount", "GST Rate");
+    printf("-----------------------------------------------------------------------\n");
+
+    for (int i = 0; i < count; i++) 
+    {
+        printf("%-5d %-20s %-10d %-10d %-10.2f %-8d%%\n",i + 1,bill[i].name,bill[i].quantity,bill[i].cost,bill[i].amount,bill[i].gstRate); 
+    }
+
+    printf("-----------------------------------------------------------------------\n");
+    
+    printf("%50s %-15s %.2f\n", "Total Amount Before Tax:", "", subTotal);
+    printf("%50s %-15s %.2f\n", "Add CGST:", "", 0); 
+    printf("%50s %-15s %.2f\n", "Add SGST:", "", 0);
+    printf("%50s %-15s %.2f\n", "Add IGST:", "", totalGST);
+    printf("=======================================================================\n");
+    printf("%50s %-15s %.2f\n", "TOTAL AMOUNT:", "", grandTotal);
+    printf("=======================================================================\n");
+    return;
+}
+
+void saveGstReport(double totalGstAmount)
+{
+    return;
 }
 
 void LowStock(struct inventory items[],int size) 
@@ -324,16 +480,16 @@ int main()
 {
     struct inventory items[100];
 
-    items[0] = (struct inventory){"Pen Black",1,9608,5,18,150};
-    items[1] = (struct inventory){"Pen Blue",2,9608,5,18,150};
-    items[2] = (struct inventory){"Pen Coloured",3,9608,10,18,100};
-    items[3] = (struct inventory){"Pencil",4,9609,5,12,200};
-    items[4] = (struct inventory){"Eraser",5,4016,2,18,100};
-    items[5] = (struct inventory){"Crayons",6,9609,30,18,50};
-    items[6] = (struct inventory){"Staplers",7,8205,50,18,20};
-    items[7] = (struct inventory){"Stapler pins",8,8205,10,18,30};
-    items[8] = (struct inventory){"Adhesive Tape",9,3919,25,18,30};
-    items[9] = (struct inventory){"Diaries",10,4820,250,18,40};
+    items[0] =  (struct inventory){"Pen Black",1,9608,5,18,150};
+    items[1] =  (struct inventory){"Pen Blue",2,9608,5,18,150};
+    items[2] =  (struct inventory){"Pen Coloured",3,9608,10,18,100};
+    items[3] =  (struct inventory){"Pencil",4,9609,5,12,200};
+    items[4] =  (struct inventory){"Eraser",5,4016,2,18,100};
+    items[5] =  (struct inventory){"Crayons",6,9609,30,18,50};
+    items[6] =  (struct inventory){"Staplers",7,8205,50,18,20};
+    items[7] =  (struct inventory){"Stapler pins",8,8205,10,18,30};
+    items[8] =  (struct inventory){"Adhesive Tape",9,3919,25,18,30};
+    items[9] =  (struct inventory){"Diaries",10,4820,250,18,40};
     items[10] = (struct inventory){"Marker Pen",11,9608,20,18,100};
     items[11] = (struct inventory){"Highlighter",12,9608,15,18,80};
     items[12] = (struct inventory){"Glue Stick",13,3506,10,18,120};
@@ -349,6 +505,7 @@ int main()
     items[22] = (struct inventory){"Cutter Knife",23,8213,70,18,40};
     items[23] = (struct inventory){"Punching Machine",24,8472,350,18,10};
     items[24] = (struct inventory){"Sticky Tack",25,3506,15,18,80};
+
     struct User users[4];
     users[0] = (struct User){"Shopkeeper","SK@123",1};
     users[1] = (struct User){"Cashier","C@123",2};
@@ -401,7 +558,7 @@ int main()
                 UpdateQuantity(items,total_items);
                 break;
             case 6:
-                // generate
+                generateBill(items,total_items,BillComponents);
                 break;
             case 7:
                 LowStock(items,total_items);
@@ -437,7 +594,7 @@ int main()
                 search(items,total_items);
                 break;
             case 3:
-                // generate
+                generateBill(items,total_items,BillComponents);
                 break;
             case 4:
                 LowStock(items,total_items);
@@ -503,7 +660,7 @@ int main()
         switch(choice)
          {
             case 1:
-               inventoryView(items,total_items);
+               generateBill(items,total_items,BillComponents);
                 break;
             case 2:
                 search(items,total_items);
