@@ -1,7 +1,3 @@
-/*
-2. Self checkout as 4th login 
-worst case scenario add gst motnly reports
-*/
 #include <stdio.h>
 #include<time.h>
 #include<string.h>
@@ -398,7 +394,7 @@ void printBillInFile(struct BillItems bill[], int count, double subTotal, double
 
     if (!fp) 
     { 
-        perror("fopen"); 
+        perror("Error opening file for GST log"); 
         //return 1; 
     }
 
@@ -795,7 +791,7 @@ int main()
             default:
                 printf("Invalid choice! Please try again.\n");
         }
-    } while(choice != 8);
+    } while(choice != 9);
     break;
 
 
@@ -923,7 +919,7 @@ int main()
             default:
                 printf("Invalid choice! Please try again.\n");
         }
-    } while(choice != 3);
+    } while(choice != 4);
     break;
 
     default:
