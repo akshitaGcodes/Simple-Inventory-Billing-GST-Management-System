@@ -170,7 +170,7 @@ void DeleteItem(struct inventory items[],int size)
     char name[50];
 
     printf("Enter Item Name: ");
-    scanf("%s",name);
+     scanf(" %[^\n]", name);
 
     int len = strlen(name);
     int itemCode = -1;
@@ -210,7 +210,6 @@ void UpdateQuantity(struct inventory items[],int size)
     char name[100];
 
     printf("Enter Item Name: ");
-   // scanf("%s",name);
    scanf(" %[^\n]", name);
 
     int itemCode = -1;
@@ -531,45 +530,45 @@ void generateMonthlyGstReport(int month, int year)
     int invoiceCount = 0;
 
     int readingInvoice = 0;
-    int invDay = 0; 
-    int invMonth = 0;
-    int invYear = 0;
+    int Day = 0; 
+    int Month = 0;
+    int Year = 0;
     double igstValue = 0.0;
-    int dateCaptured = 0;
+    int date = 0;   // your updated variable name
 
     while (fgets(line, sizeof(line), fp)) 
     {
-        
+        // Detect start of invoice
         if (strstr(line, "**GST INVOICE**")) 
         {
             readingInvoice = 1;
-            dateCaptured = 0;
+            date = 0;
             igstValue = 0.0;
         }
 
-       
+        // Read date
         if (readingInvoice && strstr(line, "Date:")) 
         {
-            sscanf(line, "Date: %d-%d-%d", &invDay, &invMonth, &invYear);
-            dateCaptured = 1;
+            sscanf(line, "Date: %d-%d-%d", &Day, &Month, &Year);
+            date = 1;
         }
 
-        
+        // Read IGST
         if (readingInvoice && strstr(line, "Add IGST:")) 
         {
             sscanf(line, "%*[^0-9]%lf", &igstValue);
         }
 
-       
+        // End of invoice
         if (readingInvoice && strstr(line, "TOTAL AMOUNT:")) 
         {
-            if (dateCaptured && invMonth == month && invYear == year) 
+            if (date && Month == month && Year == year) 
             {
                 monthlyGST += igstValue;
                 invoiceCount++;
             }
 
-            readingInvoice = 0; 
+            readingInvoice = 0;
         }
     }
 
@@ -590,6 +589,7 @@ void generateMonthlyGstReport(int month, int year)
     fprintf(fpReport, "Month: %02d/%04d\n", month, year);
     fprintf(fpReport, "-----------------------------------------------------\n");
     fprintf(fpReport, "Total IGST Collected: %.2f\n", monthlyGST);
+    fprintf(fpReport, "Total Invoices: %d\n", invoiceCount);
     fprintf(fpReport, "=====================================================\n");
 
     fclose(fpReport);
