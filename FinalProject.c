@@ -170,7 +170,7 @@ void DeleteItem(struct inventory items[],int size)
     char name[50];
 
     printf("Enter Item Name: ");
-    scanf("%s",name);
+   scanf(" %[^\n]", name);
 
     int len = strlen(name);
     int itemCode = -1;
@@ -210,7 +210,6 @@ void UpdateQuantity(struct inventory items[],int size)
     char name[100];
 
     printf("Enter Item Name: ");
-   // scanf("%s",name);
    scanf(" %[^\n]", name);
 
     int itemCode = -1;
