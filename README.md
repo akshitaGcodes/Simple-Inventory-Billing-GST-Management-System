@@ -30,17 +30,15 @@ The program currently supports the following core operations:
 
 > **Note:** The system is initially configured with pre-loaded stationery items, but the underlying structure is entirely dynamic and allows the inventory data to be modified at any time.
 
----
 
+---
 ## 🚀 Future Roadmap
 
 Planned enhancements for upcoming versions include:
-* **Universal Scaling:** Adapting the core architecture to support any retail or art business archetype.
-* **External File I/O:** Integrating Excel spreadsheet (.csv) parsing to dynamically load/save item prices and quantities on startup.
-* **Persistent History:** Implementing a local database or log file to maintain transaction history.
-* **Real-Time Synchronization:** Enabling instant inventory updates across concurrent sessions.
-
-Using a excel or list sheet to load items prices , quantity
+* **External File I/O:** Integrating spreadsheet parsing (like `.csv` flat-files) to dynamically load/save inventory details on application startup.
+* **Persistent Sales History:** Implementing local log databases to securely save transaction and invoice histories.
+* **Universal Scaling:** Adapting the core architecture to support any retail, art, or small business archetype.
+* **Real-Time Synchronization:** Enabling instant inventory updates across concurrent terminal sessions.
 
 History being saved , updation in irl time.
 
