@@ -2,6 +2,8 @@
 
 # Simple Inventory , Billing & GST Management System
 
+This project is a student-level GST Management System for a stationary shop built to master advanced C and console interface mechanics. New features, UI optimizations, and stability patches are being pushed regularly.
+
 A lightweight, terminal-based inventory management and billing application written in C. The system features a multi-role interface designed to handle real-time stock tracking, item modifications, and automated billing workflows.
 
 ---
